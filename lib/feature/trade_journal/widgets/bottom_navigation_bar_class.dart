@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 import 'package:smart_trade_journal/theme/theme.dart';
 
 class BottomNavigationBarClass extends StatefulWidget {
@@ -13,9 +13,7 @@ class _BottomNavigationBarClass extends State<BottomNavigationBarClass> {
   int _selectedIndex = 0;
   ThemeData theme = darkTheme;
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Trade Archive',
-    ),
+    TradeArchiveWidget(),
     Text(
       'Index 1: Statistic',
     ),

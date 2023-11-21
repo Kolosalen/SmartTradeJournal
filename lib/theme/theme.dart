@@ -1,17 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final darkTheme = ThemeData(
   scaffoldBackgroundColor: const Color.fromRGBO(9, 16, 34, 1),
+
   primaryColor: Convector().getMaterialColor(const Color.fromRGBO(0, 0, 0, 0.75)),
+
   primarySwatch: Convector().getMaterialColor(const Color.fromRGBO(0, 0, 0, 0.75)),
+
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
       foreground: Paint()..shader = const LinearGradient(
           colors: <Color>[
             Color.fromRGBO(90, 105, 237, 1),
             Color.fromRGBO(52, 129, 163, 1),
-          ]
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter
       ).createShader(const Rect.fromLTRB(0.0, 0.0, 400.0, 200.0))
     ),
     unselectedLabelStyle: const TextStyle(
@@ -19,10 +23,16 @@ final darkTheme = ThemeData(
     ),
     unselectedLabelColor: Colors.white54,
   ),
+
   textTheme: const TextTheme(
-    titleMedium: TextStyle(color: Colors.white, fontSize: 17),
-    bodyMedium: TextStyle(color: Colors.white)
-  )
+    titleMedium: TextStyle(color: Colors.white, fontSize: 17,fontFamily:"Sarala"),
+
+    labelMedium: TextStyle(color: Colors.white54, fontSize: 17,fontFamily:"Sarala"),
+    labelSmall: TextStyle(color: Color.fromRGBO(10, 132, 255, 1), fontSize: 17,fontFamily:"Sarala"),
+
+    bodyMedium: TextStyle(color: Colors.white, fontSize: 17,fontFamily:"Sarala"),
+    bodySmall: TextStyle(color: Colors.white30, fontSize: 15,fontFamily:"Sarala")
+  ),
 );
 
 class Convector {
