@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 final darkTheme = ThemeData(
@@ -11,12 +12,12 @@ final darkTheme = ThemeData(
     labelStyle: TextStyle(
       foreground: Paint()..shader = const LinearGradient(
           colors: <Color>[
-            Color.fromRGBO(90, 105, 237, 1),
+            Color.fromRGBO(90, 105, 237, 1.0),
             Color.fromRGBO(52, 129, 163, 1),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter
-      ).createShader(const Rect.fromLTRB(0.0, 0.0, 400.0, 200.0))
+      ).createShader(const Rect.fromLTWH(24, 710, 360, 10))
     ),
     unselectedLabelStyle: const TextStyle(
       color: Colors.white54
@@ -26,6 +27,7 @@ final darkTheme = ThemeData(
 
   textTheme: const TextTheme(
     titleMedium: TextStyle(color: Colors.white, fontSize: 17,fontFamily:"Sarala"),
+    titleSmall: TextStyle(color: Colors.white, fontSize: 15,fontFamily:"Sarala"),
 
     labelMedium: TextStyle(color: Colors.white54, fontSize: 17,fontFamily:"Sarala"),
     labelSmall: TextStyle(color: Color.fromRGBO(10, 132, 255, 1), fontSize: 17,fontFamily:"Sarala"),
@@ -33,6 +35,13 @@ final darkTheme = ThemeData(
     bodyMedium: TextStyle(color: Colors.white, fontSize: 17,fontFamily:"Sarala"),
     bodySmall: TextStyle(color: Colors.white30, fontSize: 15,fontFamily:"Sarala")
   ),
+  listTileTheme: const ListTileThemeData(
+    tileColor: Color.fromRGBO(33, 39, 56, 1),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+  ),
+  dividerColor: const Color.fromRGBO(00, 00, 00, 0.0),
 );
 
 class Convector {

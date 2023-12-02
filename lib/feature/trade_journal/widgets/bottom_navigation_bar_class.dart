@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 import 'package:smart_trade_journal/theme/theme.dart';
 
 class BottomNavigationBarClass extends StatefulWidget {
-  const BottomNavigationBarClass({super.key});
-
+  BottomNavigationBarClass(this.tradeNoteBox, {super.key});
+  final Box<TradeNote> tradeNoteBox;
   @override
   State<BottomNavigationBarClass> createState() => _BottomNavigationBarClass();
 }
 class _BottomNavigationBarClass extends State<BottomNavigationBarClass> {
   int _selectedIndex = 0;
   ThemeData theme = darkTheme;
-  static const List<Widget> _widgetOptions = <Widget>[
-    TradeArchiveWidget(),
-    Text(
-      'Index 1: Statistic',
-    ),
-    Text(
-      'Index 2: Settings',
-    ),
-  ];
+  late final Box<TradeNote> tradeNoteBox;
+  late final List<Widget> _widgetOptions;
+  @override
+  void initState() {
+    tradeNoteBox = widget.tradeNoteBox;
+    _widgetOptions = <Widget>[
+      TradeArchiveWidget(tradeNoteBox),
+      const Text(
+        'Index 1: Statistic',
+      ),
+      const Text(
+        'Index 2: Settings',
+      ),
+    ];
+    super.initState();
+  }
+
+
 
   void _onItemTapped(int index) {
     setState(() {
