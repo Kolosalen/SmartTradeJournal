@@ -3,8 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_trade_journal/theme/butt_styles.dart';
 import 'package:smart_trade_journal/theme/select_unselected_text_style.dart';
 import 'package:smart_trade_journal/theme/theme.dart';
-
-import '../Item/trade_note.dart';
+import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 
 
 
@@ -236,7 +235,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
                           gradient: butGradient,
                           borderRadius: BorderRadius.all(Radius.circular(7.0)),
                         ) : null,
-                        child: Container(
+                        child: SizedBox(
                             width: _butSize,
                             child: Text('Successful',
                               style: _isSelected[0]? selected : unselected,
@@ -249,7 +248,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
                           gradient: butGradient,
                           borderRadius: BorderRadius.all(Radius.circular(7.0)),
                         ): null,
-                        child: Container(
+                        child: SizedBox(
                             width: _butSize,
                             child: Text('Unsuccessful',
                               style: _isSelected[1]? selected : unselected,

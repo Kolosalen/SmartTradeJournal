@@ -1,0 +1,63 @@
+       Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 24),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 16,
+                    child: SizedBox(
+                      height: 48,
+                      child: DateTimePicker(
+                        type: DateTimePickerType.date,
+                        firstDate: DateTime.fromMillisecondsSinceEpoch(0),
+                        lastDate: DateTime.now(),
+                        controller: TextEditingController(text: DateTime.now().toString()),
+                        initialDate: DateTime.now(),
+                        style: theme.textTheme.bodyMedium,
+                        decoration: const InputDecoration(
+                          fillColor: Color.fromRGBO(55, 60, 76, 1),
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(vertical:10 ,horizontal: 16),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(8.0))
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  Flexible(
+                    flex: 8,
+                    child: SizedBox(
+                      height: 48,
+                      child: DateTimePicker(
+                        type: DateTimePickerType.time,
+                        initialTime: TimeOfDay.now(),
+                        use24HourFormat: false,
+                        controller: TextEditingController(),
+                        style: theme.textTheme.bodyMedium,
+                        decoration: const InputDecoration(
+                          fillColor: Color.fromRGBO(55, 60, 76, 1),
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(vertical:10 ,horizontal: 16),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(8.0))
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+Row(
+          children:[
+            IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Color.fromRGBO(10, 132, 255, 1),),
+                onPressed: () {Navigator.of(context).pushNamed('/');},
+            ),
+            Text("Archive", style: theme.textTheme.labelSmall,)
+          ]
+        ),

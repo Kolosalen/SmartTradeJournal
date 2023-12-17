@@ -342,7 +342,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                             gradient: butGradient,
                             borderRadius: BorderRadius.all(Radius.circular(7.0)),
                           ) : null,
-                          child: Container(
+                          child: SizedBox(
                               width: _butSize,
                               child: Text('Successful',
                                 style: _isSelected[0]? selected : unselected,
@@ -355,7 +355,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                             gradient: butGradient,
                             borderRadius: BorderRadius.all(Radius.circular(7.0)),
                           ): null,
-                          child: Container(
+                          child: SizedBox(
                               width: _butSize,
                               child: Text('Unsuccessful',
                                 style: _isSelected[1]? selected : unselected,

@@ -1,13 +1,11 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
-import 'feature/trade_journal/trade_journal.dart';
+import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 import 'theme/theme.dart';
 
 class SmartTradeJournal extends StatelessWidget {
-  SmartTradeJournal(this.tradeNoteBox, {super.key});
-  final Box<TradeNote> tradeNoteBox;
+  const SmartTradeJournal({super.key});
   @override
   Widget build(BuildContext context) {
     var enDatesFuture = initializeDateFormatting('en', null);
@@ -15,7 +13,7 @@ class SmartTradeJournal extends StatelessWidget {
         title: 'Smart Trade Journal',
         theme: darkTheme,
         routes: {
-          '/' :(context) => BottomNavigationBarClass(tradeNoteBox),
+          '/' :(context) => const BottomNavigationBarClass(),
           '/addNote':(context) => const AddNoteForm(),
           //'/editNote':(context) => EditNoteForm(ModalRoute.of(context)!.settings.arguments as Item.TradeNote),
           // Have problem with arguments transfer

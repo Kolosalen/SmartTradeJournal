@@ -1,19 +1,25 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 import 'app.dart';
-import 'package:hive/hive.dart';
 
 // import 'feature/trade_journal/Item/trade_note.g.dart';
 
 
 
 void main() async {
-  var path = Directory.current.path;
-  await Hive..init(path)
+  Hive..initFlutter()
   ..registerAdapter(TradeNoteAdapter());
-  final box = await Hive.openBox<TradeNote>('trade_note');
-  runApp(SmartTradeJournal(box));
+  await openHiveBox('trade_note');
+  runApp(const SmartTradeJournal());
 }
 
+Future<Box> openHiveBox(String boxName) async {
+  if (!kIsWeb && !Hive.isBoxOpen(boxName)) {
+    Hive.init((await getApplicationDocumentsDirectory()).path);
+  }
 
+  return await Hive.openBox<TradeNote>(boxName);
+}
