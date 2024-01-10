@@ -6,6 +6,9 @@ import 'package:smart_trade_journal/theme/theme.dart';
 import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 
 
+// Screen where user can create note
+// it returns null when user don't create note
+// else it returns TradeNote note
 
 class AddNoteForm extends StatefulWidget{
   const AddNoteForm({super.key});

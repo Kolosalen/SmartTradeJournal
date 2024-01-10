@@ -8,6 +8,9 @@ import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
 import 'package:smart_trade_journal/theme/dialog_style.dart';
 
 
+// Screen where user can edit note
+// it returns null when user press delete button
+// else it returns edited TradeNote note
 
 class EditNoteForm extends StatefulWidget{
 
