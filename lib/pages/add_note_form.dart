@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_trade_journal/theme/butt_styles.dart';
-import 'package:smart_trade_journal/theme/select_unselected_text_style.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
-import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
+import 'package:smart_trade_journal/models/trade_note.dart';
+import 'package:smart_trade_journal/res/butt_styles.dart';
+import 'package:smart_trade_journal/res/select_unselected_text_style.dart';
+import 'package:smart_trade_journal/res/theme.dart';
 
 
 // Screen where user can create note
@@ -62,7 +63,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
   }
   void _sentNote(){
     _setTradeNote();
-    Navigator.of(context).pop(item);
+    Get.back(result: item);
+    // Navigator.of(context).pop(item);
   }
 
   @override
@@ -82,7 +84,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
             iconColor: MaterialStateProperty.all(const Color(0xFF0A84FF))
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
+            // Navigator.pop(context);
           },
           child: const Row(
             children: [

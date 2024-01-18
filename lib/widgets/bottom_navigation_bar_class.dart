@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
+import 'package:smart_trade_journal/pages/settings_widget.dart';
+import 'package:smart_trade_journal/pages/statistic_widget.dart';
+import 'package:smart_trade_journal/pages/trade_archive_widgets.dart';
+import 'package:smart_trade_journal/res/theme.dart';
+
 
 class BottomNavigationBarClass extends StatefulWidget {
   const BottomNavigationBarClass({super.key});

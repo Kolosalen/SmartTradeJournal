@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_trade_journal/theme/butt_styles.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
+import 'package:smart_trade_journal/res/butt_styles.dart';
+import 'package:smart_trade_journal/res/theme.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({super.key});

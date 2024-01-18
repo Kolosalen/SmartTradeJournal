@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_trade_journal/feature/trade_journal/bloc/note_list/note_list_bloc.dart';
-import 'package:smart_trade_journal/theme/butt_styles.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
+import 'package:smart_trade_journal/bloc/note_list/note_list_bloc.dart';
+import 'package:smart_trade_journal/res/theme.dart';
+import 'package:smart_trade_journal/res/butt_styles.dart';
 
 class AddNoteButton extends StatelessWidget {
   AddNoteButton({super.key});

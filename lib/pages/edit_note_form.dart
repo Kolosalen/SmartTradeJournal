@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_trade_journal/theme/butt_styles.dart';
-import 'package:smart_trade_journal/theme/select_unselected_text_style.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
-import 'package:smart_trade_journal/feature/trade_journal/trade_journal.dart';
-import 'package:smart_trade_journal/theme/dialog_style.dart';
+import 'package:smart_trade_journal/res/butt_styles.dart';
+import 'package:smart_trade_journal/res/select_unselected_text_style.dart';
+import 'package:smart_trade_journal/res/dialog_style.dart';
+
+import '../models/trade_note.dart';
+import '../res/theme.dart';
 
 
 // Screen where user can edit note
@@ -28,7 +30,8 @@ class _EditNoteFormState extends State<EditNoteForm> {
   DateTime tempDate = DateFormat("hh:mm").parse("${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}");
   final dateFormat = DateFormat("h:mm a");
   final List<bool> _isSelected = [true, false]; // list for toggle switch
-  var _butSize = 100.0; // Пусть будет 100
+  var _butWidth = 100.0; // Пусть будет 100
+  var _butHeigth = 36.0;
   late bool _isDisabled;
   String _strategy = '';
   bool _result = false;
@@ -54,6 +57,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
     _dateVar = item.dateTime.copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
     _timeVar = TimeOfDay.fromDateTime(item.dateTime);
     _note = item.notes;
+    additionalNoteController = TextEditingController(text: _note);
     tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
   }
 
@@ -81,72 +85,134 @@ class _EditNoteFormState extends State<EditNoteForm> {
 
   void _sentNote(){
     _setTradeNote();
-    Navigator.of(context).pop(item);
+    Get.back(result: item);
+    // Navigator.of(context).pop(item);
   }
 
   void delete(){
-    Navigator.of(context).pop(null);
+    Get.back(result: null);
+    // Navigator.of(context).pop(null);
   }
 
 
-  Future<void> _saveChangesDialogBuilder(BuildContext context){
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(// set up the AlertDialog
-          title: const Text("Save changes?"),
-          content: const Text("If you leave now, changes will not be saved"),
-          actions: [
-            TextButton(
-              child: const Text("Cancel", style: noTextStyle,),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Save", style: yesTextStyle,),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _sentNote();
-              },
-            ),
+  Future<void> _ssaveChangesDialogBuilder(BuildContext context) {
+    return Get.dialog(saveChangesDialogWidget(context));
+  }
+  Widget saveChangesDialogWidget(BuildContext context){
+    return AlertDialog(// set up the AlertDialog
+      title: const Text("Save changes?"),
+      content: const Text("If you leave now, changes will not be saved"),
+      actions: [
+        TextButton(
+          child: const Text("Cancel", style: noTextStyle,),
+          onPressed: () {
+            Get.back();
+            // Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: const Text("Save", style: yesTextStyle,),
+          onPressed: () {
+            Get.back();
+            // Navigator.of(context).pop();
+            _sentNote();
+          },
+        ),
 
-          ],
-        );
-      },
+      ],
+    );
+  }
+  // Future<void> _saveChangesDialogBuilder(BuildContext context){
+  //   return showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(// set up the AlertDialog
+  //         title: const Text("Save changes?"),
+  //         content: const Text("If you leave now, changes will not be saved"),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text("Cancel", style: noTextStyle,),
+  //             onPressed: () {
+  //               Get.back();
+  //               // Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: const Text("Save", style: yesTextStyle,),
+  //             onPressed: () {
+  //               Get.back();
+  //               // Navigator.of(context).pop();
+  //               _sentNote();
+  //             },
+  //           ),
+  //
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future<void> _ddeleteDialogBuilder(BuildContext context){
+    return Get.dialog(deleteDialogWidget(context));
+  }
+  Widget deleteDialogWidget(BuildContext context){
+    return AlertDialog(// set up the AlertDialog
+      title: const Text("Delete?"),
+      content: const Text("Are you sure you want to delete this note?"),
+      actions: [
+        TextButton(
+          child: const Text("Cancel", style: noTextStyle,),
+          onPressed: () {
+            Get.back();
+            // Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: const Text("Delete", style: deleteTextStyle),
+          onPressed: () {
+            Get.back();
+            // Navigator.of(context).pop();
+            delete();
+          },
+        ),
+
+      ],
     );
   }
 
-  Future<void> _deleteDialogBuilder(BuildContext context){
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(// set up the AlertDialog
-          title: const Text("Delete?"),
-          content: const Text("Are you sure you want to delete this note?"),
-          actions: [
-            TextButton(
-              child: const Text("Cancel", style: noTextStyle,),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Delete", style: deleteTextStyle),
-              onPressed: () {
-                Navigator.of(context).pop();
-                delete();
-              },
-            ),
-
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> _deleteDialogBuilder(BuildContext context){
+  //   return showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(// set up the AlertDialog
+  //         title: const Text("Delete?"),
+  //         content: const Text("Are you sure you want to delete this note?"),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text("Cancel", style: noTextStyle,),
+  //             onPressed: () {
+  //               Get.back();
+  //               // Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: const Text("Delete", style: deleteTextStyle),
+  //             onPressed: () {
+  //               Get.back();
+  //               // Navigator.of(context).pop();
+  //               delete();
+  //             },
+  //           ),
+  //
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   var strategyController = TextEditingController();
   var amountController = TextEditingController();
+  TextEditingController additionalNoteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,12 +225,12 @@ class _EditNoteFormState extends State<EditNoteForm> {
             ),
           ),
           leadingWidth: 106,
-          leading: TextButton(
+          leading: TextButton( /// leading return button. labeled Archive
               style: ButtonStyle(
                   iconColor: MaterialStateProperty.all(const Color(0xFF0A84FF))
               ),
               onPressed: () {
-                _isEdited ? _saveChangesDialogBuilder(context) : _sentNote();
+                _isEdited ? _ssaveChangesDialogBuilder(context) : _sentNote();
               },
               child: const Row(
                   children: [
@@ -315,59 +381,62 @@ class _EditNoteFormState extends State<EditNoteForm> {
                 Text('Result', style: theme.textTheme.bodySmall,),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 24),
-                  child: SizedBox(
-                    height: 28,
-                    child: ToggleButtons(
-                      constraints: BoxConstraints(minWidth: _butSize = (MediaQuery.of(context).size.width - 55) / 2),
-                      borderRadius: BorderRadius.circular(7),
-                      isSelected: _isSelected,
-                      onPressed: (int newIndex) {
-                        setState(() {
-                          // looping through the list of booleans values
-                          for (int index = 0; index < _isSelected.length; index++) {
-                            // checking for the index value
-                            if (index == newIndex) {
-                              // one button is always set to true
-                              _isSelected[index] = true;
-                            } else {
-                              // other two will be set to false and not selected
-                              _isSelected[index] = false;
-                            }
+                  child: ToggleButtons(
+                    constraints: BoxConstraints(minWidth: _butWidth = (MediaQuery.of(context).size.width - 55) / 2, minHeight: _butHeigth),
+                    borderRadius: BorderRadius.circular(7),
+                    isSelected: _isSelected,
+                    onPressed: (int newIndex) {
+                      setState(() {
+                        // looping through the list of booleans values
+                        for (int index = 0; index < _isSelected.length; index++) {
+                          // checking for the index value
+                          if (index == newIndex) {
+                            // one button is always set to true
+                            _isSelected[index] = true;
+                          } else {
+                            // other two will be set to false and not selected
+                            _isSelected[index] = false;
                           }
-                          _result = _isSelected[0];
-                          _isEdited = true;
-                          _checkFields();
-                        });
-                      },
-                      children: [
-                        Ink(
-                          decoration: _isSelected[0] ? const BoxDecoration(
-                            gradient: butGradient,
-                            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                          ) : null,
-                          child: SizedBox(
-                              width: _butSize,
+                        }
+                        _result = _isSelected[0];
+                        _isEdited = true;
+                        _checkFields();
+                      });
+                    },
+                    children: [
+                      Ink(
+                        decoration: _isSelected[0] ? const BoxDecoration(
+                          gradient: butGradient,
+                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                        ) : null,
+                        child: SizedBox(
+                            width: _butWidth,
+                            height: _butHeigth,
+                            child: Center(
                               child: Text('Successful',
                                 style: _isSelected[0]? selected : unselected,
                                 textAlign: TextAlign.center,
-                              )
-                          ),
+                              ),
+                            )
                         ),
-                        Ink(
-                          decoration: _isSelected[1] ? const BoxDecoration(
-                            gradient: butGradient,
-                            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                          ): null,
-                          child: SizedBox(
-                              width: _butSize,
+                      ),
+                      Ink(
+                        decoration: _isSelected[1] ? const BoxDecoration(
+                          gradient: butGradient,
+                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                        ): null,
+                        child: SizedBox(
+                            width: _butWidth,
+                            height: _butHeigth,
+                            child: Center(
                               child: Text('Unsuccessful',
                                 style: _isSelected[1]? selected : unselected,
                                 textAlign: TextAlign.center,
-                              )
-                          ),
-                        )
-                      ],
-                    ),
+                              ),
+                            )
+                        ),
+                      )
+                    ],
                   ),
                 ),//Result toggle buttons
                 Text('Total amount', style: theme.textTheme.bodySmall,),
@@ -410,6 +479,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.20,
                   child: TextField(
+                      controller: additionalNoteController,
                       minLines: null,
                       maxLines: null,
                       expands: true,
@@ -435,7 +505,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () => _deleteDialogBuilder(context),
+                    onPressed: () => _ddeleteDialogBuilder(context),
                     style: butStyle,
                     child: Container(
                       padding: const EdgeInsets.all(8.0),

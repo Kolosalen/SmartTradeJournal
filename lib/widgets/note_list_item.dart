@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_trade_journal/feature/trade_journal/bloc/note_list/note_list_bloc.dart';
-import 'package:smart_trade_journal/feature/trade_journal/item/item.dart';
-import 'package:smart_trade_journal/theme/success_unsuccess_text_style.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
-import 'package:get/get.dart';
-import '../feature/trade_journal/view/view.dart';
+import 'package:smart_trade_journal/bloc/note_list/note_list_bloc.dart';
+import 'package:smart_trade_journal/models/trade_note.dart';
+import 'package:smart_trade_journal/res/success_unsuccess_text_style.dart';
+import 'package:smart_trade_journal/res/theme.dart';
+
+
 
 class NoteListItem extends StatelessWidget {
   NoteListItem(this.tradenote,{super.key});

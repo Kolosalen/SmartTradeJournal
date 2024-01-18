@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_trade_journal/feature/trade_journal/bloc/note_list/note_list_bloc.dart';
-import 'package:smart_trade_journal/theme/theme.dart';
-// import 'package:smart_trade_journal/theme/success_unsuccess_text_style.dart';
+import 'package:smart_trade_journal/bloc/note_list/note_list_bloc.dart';
+import 'package:smart_trade_journal/res/theme.dart';
 import 'package:smart_trade_journal/widgets/add_note_button.dart';
 import 'package:smart_trade_journal/widgets/note_list_item.dart';
 
@@ -90,7 +89,7 @@ class _TradeArchiveWidget extends State<TradeArchiveWidget>{
   Widget _bbody(){
     return BlocBuilder<NoteListBloc, NoteListState>(
       builder: (context, state) {
-        context.watch().add(NoteListState.initial());
+        context.watch<NoteListBloc>().add(const NoteListEvent.initialize());
         if (state.noteList.isEmpty) {
           return const Center(
               child: Text("No Notes yet\nClick \"Add\" to create one", textAlign: TextAlign.center,)
@@ -153,31 +152,28 @@ class _TradeArchiveWidget extends State<TradeArchiveWidget>{
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NoteListBloc(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Trade Archive",
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleMedium,
-          ),
-          centerTitle: true,
-          backgroundColor: theme.scaffoldBackgroundColor,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Trade Archive",
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleMedium,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Stack(
-            children:  [_bbody(),
-              Positioned(
-                bottom: 8,
-                left: 0,
-                right:0,
-                child: AddNoteButton()
-              )
-              ]
-          ),
-        )
+        centerTitle: true,
+        backgroundColor: theme.scaffoldBackgroundColor,
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Stack(
+          children:  [_bbody(),
+            Positioned(
+              bottom: 8,
+              left: 0,
+              right:0,
+              child: AddNoteButton()
+            )
+            ]
+        ),
+      )
     );
   }
 
