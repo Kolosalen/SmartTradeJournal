@@ -33,6 +33,7 @@ class NoteListBloc extends HydratedBloc<NoteListEvent, NoteListState> {
       noteListNew.sort((a, b) => (b.dateTime.compareTo(a.dateTime)));//Сортировка по времени в порядке не возрастания
       emit(state.copyWith(noteList: noteListNew));
     });
+
     on<_EditNote>((event, emit) async {
       var noteListNew = <TradeNote>[];
       noteListNew.addAll(state.noteList);
@@ -52,6 +53,7 @@ class NoteListBloc extends HydratedBloc<NoteListEvent, NoteListState> {
         }
       }
     });
+
     on<_DeleteNote>((event, emit) {
       state.noteList.remove(event.tradeNote);
       emit(state);

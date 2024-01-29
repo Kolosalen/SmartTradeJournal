@@ -40,7 +40,8 @@ class _EditNoteFormState extends State<EditNoteForm> {
   String _note = '';
   late TradeNote item; // getting and returning class
   bool _isEdited = false;
-
+  late DateTime _dateVarSave;
+  late TimeOfDay _timeVarSave;
 
   @override
   void initState() {
@@ -59,6 +60,8 @@ class _EditNoteFormState extends State<EditNoteForm> {
     _note = item.notes;
     additionalNoteController = TextEditingController(text: _note);
     tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+    _dateVarSave = _dateVar;
+    _timeVarSave = _timeVar;
   }
 
   void _checkFields(){
@@ -106,7 +109,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
         TextButton(
           child: const Text("Cancel", style: noTextStyle,),
           onPressed: () {
-            Get.back();
+            Get.back(closeOverlays: true);
             // Navigator.of(context).pop();
           },
         ),
@@ -180,35 +183,172 @@ class _EditNoteFormState extends State<EditNoteForm> {
     );
   }
 
-  // Future<void> _deleteDialogBuilder(BuildContext context){
-  //   return showDialog<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(// set up the AlertDialog
-  //         title: const Text("Delete?"),
-  //         content: const Text("Are you sure you want to delete this note?"),
-  //         actions: [
-  //           TextButton(
-  //             child: const Text("Cancel", style: noTextStyle,),
-  //             onPressed: () {
-  //               Get.back();
-  //               // Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text("Delete", style: deleteTextStyle),
-  //             onPressed: () {
-  //               Get.back();
-  //               // Navigator.of(context).pop();
-  //               delete();
-  //             },
-  //           ),
-  //
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  Widget DateCuppertino(DateTime startDate) {
+    var date = startDate;
+    return Column(
+      children: [
+        Row(
+            children:[
+              TextButton(
+                child: const Text("Cancel", style: TextStyle(fontFamily:"Sarala", color: Colors.grey),),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              const Spacer(),
+              TextButton(
+                child: const Text("Reset", style: TextStyle(fontFamily:"Sarala", color: Color(0xFF5a69ed),
+                ),),
+                onPressed: () {
+                  setState(() {
+                    _dateVar = _dateVarSave;
+                    date = startDate;
+                    Get.back();
+                    Get.bottomSheet(DateCuppertino(_dateVar),
+                        backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                    );
+                  });
+                },
+              ),
+            ]
+        ),
+        Expanded(
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+                    fontFamily:"Sarala"),
+              ),
+            ),
+            child: SafeArea(
+              child: CupertinoDatePicker(
+                initialDateTime: date,
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (newDate) {
+                  setState(() {
+                    date = newDate;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          child: ElevatedButton(
+              onPressed: (){
+                setState(() {
+                  _dateVar = date;
+                  _isEdited = true;
+                  _checkFields();
+                  Get.back();
+                });
+              },
+              style: butStyle,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF000000),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  gradient: butGradient,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Select date", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
+                  ],
+                ),
+              )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget TimeCuppertino(DateTime startTime) {
+    var time = startTime;
+    return Column(
+      children: [
+        Row(
+            children:[
+              TextButton(
+                child: const Text("Cancel", style: TextStyle(fontFamily:"Sarala", color: Colors.grey),),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              const Spacer(),
+              TextButton(
+                child: const Text("Reset", style: TextStyle(fontFamily:"Sarala", color: Color(0xFF5a69ed),
+                ),),
+                onPressed: () {
+                  setState(() {
+                    _timeVar = _timeVarSave;
+                    time = startTime;
+                    tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+                    Get.back();
+                    Get.bottomSheet(TimeCuppertino(DateTime(1,0,0).add(Duration(hours: _timeVar.hour, minutes: _timeVar.minute))),
+                        backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                    );
+                  });
+                },
+              ),
+            ]
+        ),
+        Expanded(
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+                    fontFamily:"Sarala"),
+              ),
+            ),
+            child: SafeArea(
+              child: CupertinoDatePicker(
+                minimumYear: 0,
+                initialDateTime: time,
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (newDate) {
+                  setState(() {
+                    time = newDate;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          child: ElevatedButton(
+              onPressed: (){
+                setState(() {
+                  _timeVar = TimeOfDay.fromDateTime(time);
+                  tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+                  _isEdited = true;
+                  _checkFields();
+                  Get.back();
+                });
+              },
+              style: butStyle,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF000000),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  gradient: butGradient,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Select time", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
+                  ],
+                ),
+              )
+          ),
+        ),
+      ],
+    );
+  }
 
   var strategyController = TextEditingController();
   var amountController = TextEditingController();
@@ -310,20 +450,23 @@ class _EditNoteFormState extends State<EditNoteForm> {
                             controller: TextEditingController(text: DateFormat.yMMMMd().format(_dateVar).toString()),
                             canRequestFocus: false,
                             onTap: (){
-                              showDatePicker(
-                                context: context,
-                                initialDate: _dateVar,
-                                firstDate: DateTime(2015),
-                                lastDate: DateTime(2101),
-                              ).then((date) {
-                                if (date!= null) {
-                                  setState(() {
-                                    _dateVar = date;
-                                    _isEdited = true;
-                                    _checkFields();
-                                  });
-                                }
-                              });
+                              // showDatePicker(
+                              //   context: context,
+                              //   initialDate: _dateVar,
+                              //   firstDate: DateTime(2015),
+                              //   lastDate: DateTime(2101),
+                              // ).then((date) {
+                              //   if (date!= null) {
+                              //     setState(() {
+                              //       _dateVar = date;
+                              //       _isEdited = true;
+                              //       _checkFields();
+                              //     });
+                              //   }
+                              // });
+                              Get.bottomSheet(DateCuppertino(_dateVar),
+                                  backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                              );
                             },
                             decoration: const InputDecoration(
                               fillColor: Color.fromRGBO(55, 60, 76, 1),
@@ -343,26 +486,29 @@ class _EditNoteFormState extends State<EditNoteForm> {
                             controller: TextEditingController(text: dateFormat.format(tempDate)),
                             canRequestFocus: false,
                             onTap: (){
-                              showTimePicker(
-                                  context: context,
-                                  initialTime: _timeVar,
-                                  builder: (BuildContext context, Widget? child) {
-                                    return MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: false),
-                                      child: child!,
-                                    );
-                                  }
-                              ).then((time) {
-                                if (time!= null) {
-                                  setState(() {
-                                    _timeVar = time;
-                                    tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
-                                    _isEdited = true;
-                                    _checkFields();
-                                  });
-                                }
-                              });
+                              // showTimePicker(
+                              //     context: context,
+                              //     initialTime: _timeVar,
+                              //     builder: (BuildContext context, Widget? child) {
+                              //       return MediaQuery(
+                              //         data: MediaQuery.of(context).copyWith(
+                              //             alwaysUse24HourFormat: false),
+                              //         child: child!,
+                              //       );
+                              //     }
+                              // ).then((time) {
+                              //   if (time!= null) {
+                              //     setState(() {
+                              //       _timeVar = time;
+                              //       tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+                              //       _isEdited = true;
+                              //       _checkFields();
+                              //     });
+                              //   }
+                              // });
+                              Get.bottomSheet(TimeCuppertino(DateTime(1,0,0).add(Duration(hours: _timeVar.hour, minutes: _timeVar.minute))),
+                                  backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                              );
                             },
                             decoration: const InputDecoration(
                               fillColor: Color.fromRGBO(55, 60, 76, 1),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -65,6 +66,170 @@ class _AddNoteFormState extends State<AddNoteForm> {
     _setTradeNote();
     Get.back(result: item);
     // Navigator.of(context).pop(item);
+  }
+
+
+  Widget DateCuppertino(DateTime startDate) {
+    var date = startDate;
+    return Column(
+      children: [
+        Row(
+        children:[
+          TextButton(
+            child: const Text("Cancel", style: TextStyle(fontFamily:"Sarala", color: Colors.grey),),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          const Spacer(),
+          TextButton(
+            child: const Text("Reset", style: TextStyle(fontFamily:"Sarala", color: Color(0xFF5a69ed),
+            ),),
+            onPressed: () {
+              setState(() {
+                _dateVar = DateTime.now();
+                date = startDate;
+                Get.back();
+                Get.bottomSheet(DateCuppertino(_dateVar),
+                    backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                );
+              });
+            },
+          ),
+          ]
+        ),
+        Expanded(
+            child: CupertinoTheme(
+              data: const CupertinoThemeData(
+                textTheme: CupertinoTextThemeData(
+                  dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+                      fontFamily:"Sarala"),
+                ),
+              ),
+              child: SafeArea(
+                child: CupertinoDatePicker(
+                  initialDateTime: date,
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: (newDate) {
+                    setState(() {
+                      date = newDate;
+                    });
+                  },
+                ),
+              ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          child: ElevatedButton(
+              onPressed: (){
+                setState(() {
+                  _dateVar = date;
+                  Get.back();
+                });
+              },
+              style: butStyle,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF000000),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  gradient: butGradient,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Select date", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
+                  ],
+                ),
+              )
+          ),
+        ),
+      ],
+    );
+}
+
+  Widget TimeCuppertino(DateTime startTime) {
+    var time = startTime;
+    return Column(
+      children: [
+        Row(
+            children:[
+              TextButton(
+                child: const Text("Cancel", style: TextStyle(fontFamily:"Sarala", color: Colors.grey),),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              const Spacer(),
+              TextButton(
+                child: const Text("Reset", style: TextStyle(fontFamily:"Sarala", color: Color(0xFF5a69ed),
+                ),),
+                onPressed: () {
+                  setState(() {
+                    _timeVar = TimeOfDay.now();
+                    time = startTime;
+                    tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+                    Get.back();
+                    Get.bottomSheet(TimeCuppertino(DateTime(1,0,0).add(Duration(hours: _timeVar.hour, minutes: _timeVar.minute))),
+                        backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                    );
+                  });
+                },
+              ),
+            ]
+        ),
+        Expanded(
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+                    fontFamily:"Sarala"),
+              ),
+            ),
+            child: SafeArea(
+              child: CupertinoDatePicker(
+                minimumYear: 0,
+                initialDateTime: time,
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (newDate) {
+                  setState(() {
+                    time = newDate;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          child: ElevatedButton(
+              onPressed: (){
+                setState(() {
+                  _timeVar = TimeOfDay.fromDateTime(time);
+                  tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
+                  Get.back();
+                });
+              },
+              style: butStyle,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF000000),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  gradient: butGradient,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Select time", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
+                  ],
+                ),
+              )
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -142,23 +307,15 @@ class _AddNoteFormState extends State<AddNoteForm> {
                   child: Row(
                     children: [
                       Flexible(
-                        flex: 20,
+                        flex: 17,
                         child: TextField(//Date picker
+                          readOnly: true,
                           style: theme.textTheme.titleMedium,
                           controller: TextEditingController(text: DateFormat.yMMMMd().format(_dateVar).toString()),
                           onTap: (){
-                            showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2015),
-                              lastDate: DateTime(2101),
-                            ).then((date) {
-                              if (date!= null) {
-                                setState(() {
-                                  _dateVar = date;
-                                });
-                              }
-                            });
+                            Get.bottomSheet(DateCuppertino(_dateVar),
+                                backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                            );
                           },
                           decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(55, 60, 76, 1),
@@ -174,27 +331,13 @@ class _AddNoteFormState extends State<AddNoteForm> {
                       Flexible(
                         flex: 10,
                         child: TextField(//Time picker
+                          readOnly: true,
                           style: theme.textTheme.titleMedium,
                           controller: TextEditingController(text: dateFormat.format(tempDate)),
                           onTap: (){
-                            showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                              builder: (BuildContext context, Widget? child) {
-                                return MediaQuery(
-                                  data: MediaQuery.of(context).copyWith(
-                                      alwaysUse24HourFormat: false),
-                                  child: child!,
-                                );
-                              }
-                            ).then((time) {
-                              if (time!= null) {
-                                setState(() {
-                                  _timeVar = time;
-                                  tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
-                                });
-                              }
-                            });
+                            Get.bottomSheet(TimeCuppertino(DateTime(1,0,0).add(Duration(hours: _timeVar.hour, minutes: _timeVar.minute))),
+                                backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
+                            );
                           },
                           decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(55, 60, 76, 1),
@@ -353,3 +496,34 @@ class _AddNoteFormState extends State<AddNoteForm> {
     );
   }
 }
+//
+// class DateCupertinoPicker extends StatefulWidget {
+//   const DateCupertinoPicker(this.startDate, {super.key});
+//   final startDate;
+//   @override
+//   State<DateCupertinoPicker> createState() => _DateCupertinoPickerState(startDate);
+// }
+//
+// class _DateCupertinoPickerState extends State<DateCupertinoPicker> {
+//   _DateCupertinoPickerState(this.date);
+//   var date;
+//   @override
+//   Widget build(BuildContext context) {
+//     return CupertinoDatePicker(
+//       initialDateTime: date,
+//       mode: CupertinoDatePickerMode.date,
+//       onDateTimeChanged: (newDate) {
+//         setState(() {
+//           date = newDate;
+//         });
+//       },
+//     );
+//   }
+//
+
+// }
+// class DateTimeNotifier extends ValueNotifier<DateTime>{
+//   DateTimeNotifier(DateTime value) : super(value);
+//
+//   void changeDateTime()
+// }
