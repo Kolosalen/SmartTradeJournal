@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final darkTheme = ThemeData(
@@ -7,6 +8,15 @@ final darkTheme = ThemeData(
   primaryColor: Convector().getMaterialColor(const Color.fromRGBO(0, 0, 0, 0.75)),
 
   primarySwatch: Convector().getMaterialColor(const Color.fromRGBO(0, 0, 0, 0.75)),
+
+  fontFamily: "Sarala",
+
+  appBarTheme: const AppBarTheme(
+    iconTheme: IconThemeData(
+      color: CupertinoColors.systemBlue
+    )
+
+  ),
 
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(

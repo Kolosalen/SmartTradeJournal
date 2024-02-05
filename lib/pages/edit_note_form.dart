@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_trade_journal/res/butt_styles.dart';
 import 'package:smart_trade_journal/res/select_unselected_text_style.dart';
-import 'package:smart_trade_journal/res/dialog_style.dart';
 
 import '../models/trade_note.dart';
 import '../res/theme.dart';
@@ -31,7 +30,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
   final dateFormat = DateFormat("h:mm a");
   final List<bool> _isSelected = [true, false]; // list for toggle switch
   var _butWidth = 100.0; // Пусть будет 100
-  var _butHeigth = 36.0;
+  final _butHeigth = 36.0;
   late bool _isDisabled;
   String _strategy = '';
   bool _result = false;
@@ -86,13 +85,17 @@ class _EditNoteFormState extends State<EditNoteForm> {
     );
   }
 
+  void _cancelEdit(){
+    Get.back(result: item, closeOverlays: true);
+  }
+
   void _sentNote(){
     _setTradeNote();
     Get.back(result: item);
     // Navigator.of(context).pop(item);
   }
 
-  void delete(){
+  void _delete(){
     Get.back(result: null);
     // Navigator.of(context).pop(null);
   }
@@ -102,28 +105,49 @@ class _EditNoteFormState extends State<EditNoteForm> {
     return Get.dialog(saveChangesDialogWidget(context));
   }
   Widget saveChangesDialogWidget(BuildContext context){
-    return AlertDialog(// set up the AlertDialog
-      title: const Text("Save changes?"),
-      content: const Text("If you leave now, changes will not be saved"),
-      actions: [
-        TextButton(
-          child: const Text("Cancel", style: noTextStyle,),
-          onPressed: () {
-            Get.back(closeOverlays: true);
-            // Navigator.of(context).pop();
-          },
+      return Theme(
+        data: ThemeData.dark(),
+        child: CupertinoAlertDialog(
+          title: const Text("Save changes?"),
+          content: const Text("If you leave now, changes will not be saved"),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              onPressed: _cancelEdit,
+              child: const Text("Cancel", style: TextStyle(color: CupertinoColors.activeBlue),),
+            ),
+            CupertinoDialogAction(
+              onPressed: () {
+                Get.back();
+                _sentNote();
+              } ,
+              isDefaultAction: true,
+              child: const Text("Save", style: TextStyle(color: CupertinoColors.activeBlue),),
+            ),
+          ],
         ),
-        TextButton(
-          child: const Text("Save", style: yesTextStyle,),
-          onPressed: () {
-            Get.back();
-            // Navigator.of(context).pop();
-            _sentNote();
-          },
-        ),
-
-      ],
-    );
+      );
+    // return AlertDialog(// set up the AlertDialog
+    //   title: const Text("Save changes?"),
+    //   content: const Text("If you leave now, changes will not be saved"),
+    //   actions: [
+    //     TextButton(
+    //       child: const Text("Cancel", style: noTextStyle,),
+    //       onPressed: () {
+    //         Get.back(closeOverlays: true);
+    //         // Navigator.of(context).pop();
+    //       },
+    //     ),
+    //     TextButton(
+    //       child: const Text("Save", style: yesTextStyle,),
+    //       onPressed: () {
+    //         Get.back();
+    //         // Navigator.of(context).pop();
+    //         _sentNote();
+    //       },
+    //     ),
+    //
+    //   ],
+    // );
   }
   // Future<void> _saveChangesDialogBuilder(BuildContext context){
   //   return showDialog<void>(
@@ -159,28 +183,49 @@ class _EditNoteFormState extends State<EditNoteForm> {
     return Get.dialog(deleteDialogWidget(context));
   }
   Widget deleteDialogWidget(BuildContext context){
-    return AlertDialog(// set up the AlertDialog
-      title: const Text("Delete?"),
-      content: const Text("Are you sure you want to delete this note?"),
-      actions: [
-        TextButton(
-          child: const Text("Cancel", style: noTextStyle,),
-          onPressed: () {
-            Get.back();
-            // Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: const Text("Delete", style: deleteTextStyle),
-          onPressed: () {
-            Get.back();
-            // Navigator.of(context).pop();
-            delete();
-          },
-        ),
-
-      ],
+    return Theme(
+      data: ThemeData.dark(),
+      child: CupertinoAlertDialog(
+        title: const Text("Delete?"),
+        content: const Text("Are you sure you want to delete this note?"),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () => Get.back(),
+            child: const Text("Cancel", style: TextStyle(color: CupertinoColors.activeBlue),),
+          ),
+          CupertinoDialogAction(
+            onPressed: () {
+              Get.back();
+              _delete();
+            } ,
+            isDestructiveAction: true,
+            child: const Text("Delete"),
+          ),
+        ],
+      ),
     );
+    // return AlertDialog(// set up the AlertDialog
+    //   title: const Text("Delete?"),
+    //   content: const Text("Are you sure you want to delete this note?"),
+    //   actions: [
+    //     TextButton(
+    //       child: const Text("Cancel", style: noTextStyle,),
+    //       onPressed: () {
+    //         Get.back();
+    //         // Navigator.of(context).pop();
+    //       },
+    //     ),
+    //     TextButton(
+    //       child: const Text("Delete", style: deleteTextStyle),
+    //       onPressed: () {
+    //         Get.back();
+    //         // Navigator.of(context).pop();
+    //         delete();
+    //       },
+    //     ),
+    //
+    //   ],
+    // );
   }
 
   Widget DateCuppertino(DateTime startDate) {
@@ -287,7 +332,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                     time = startTime;
                     tempDate = DateFormat("hh:mm").parse("${_timeVar.hour.toString().padLeft(2, '0')}:${_timeVar.minute.toString().padLeft(2, '0')}");
                     Get.back();
-                    Get.bottomSheet(TimeCuppertino(DateTime(1,0,0).add(Duration(hours: _timeVar.hour, minutes: _timeVar.minute))),
+                    Get.bottomSheet(TimeCuppertino(DateTime(0, 0, 0, _timeVar.hour, _timeVar.minute)),
                         backgroundColor: const Color.fromRGBO(33, 39, 56, 1)
                     );
                   });

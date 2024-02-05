@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:smart_trade_journal/pages/privacy_polity.dart';
+import 'package:smart_trade_journal/pages/terms_of_use.dart';
 import 'package:smart_trade_journal/res/butt_styles.dart';
 import 'package:smart_trade_journal/res/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({super.key});
@@ -13,6 +17,14 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   var theme = darkTheme;
+  final Uri supportLink = Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLSdqdxG_629fJF-ZEWYMZx2p7PzONXFYO_OdpILKV-331KF6Dg/viewform');
+  final Uri shareLink = Uri.parse('https://apps.apple.com/app/id64763982');
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(supportLink)) {
+      throw Exception('Could not launch $supportLink');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +42,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           child: Column(
             children: [
               ElevatedButton(
-                  onPressed: () { },
+                  onPressed: () {Get.to(() => PrivacyPolityPage());},
                   style: butStyle,
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -42,14 +54,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset('assets/svg/Security.svg'),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Text("Privacy polity", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
                       ],
                     ),
                   )
               ),
               ElevatedButton(
-                  onPressed: () { },
+                  onPressed: () {Get.to(() => TermsOfUsePage()); },
                   style: butStyle,
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -61,14 +73,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset('assets/svg/Doc.svg'),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Text("Terms of use", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
                       ],
                     ),
                   )
               ),
               ElevatedButton(
-                  onPressed: () { },
+                  onPressed: _launchUrl,
                   style: butStyle,
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -80,14 +92,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset('assets/svg/Support.svg'),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Text("Support", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
                       ],
                     ),
                   )
               ),
               ElevatedButton(
-                  onPressed: () { },
+                  onPressed: () { Share.shareUri(shareLink);},
                   style: butStyle,
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -99,7 +111,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset('assets/svg/Share.svg'),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Text("Share", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium,),
                       ],
                     ),

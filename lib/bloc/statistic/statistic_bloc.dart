@@ -97,7 +97,6 @@ class StatisticBloc extends HydratedBloc<StatisticEvent, StatisticState> {
           var barGroup6 = makeGroupData(5, barInfo.successCountDay[5], barInfo.unsuccessCountDay[5]);
           var barGroup7 = makeGroupData(6, barInfo.successCountDay[6], barInfo.unsuccessCountDay[6]);
           showingBarGroups = [barGroup1, barGroup2, barGroup3, barGroup4, barGroup5, barGroup6, barGroup7];
-          print(showingBarGroups.length);
           emit(state.copyWith(showingBarGroups: showingBarGroups, type: event.type));
           break;
         case 1://week
@@ -109,7 +108,6 @@ class StatisticBloc extends HydratedBloc<StatisticEvent, StatisticState> {
           var barGroup6 = makeGroupData(5, barInfo.successCountWeek[5], barInfo.unsuccessCountWeek[5]);
           var barGroup7 = makeGroupData(6, barInfo.successCountWeek[6], barInfo.unsuccessCountWeek[6]);
           showingBarGroups = [barGroup1, barGroup2, barGroup3, barGroup4, barGroup5, barGroup6, barGroup7];
-          print(showingBarGroups.length);
           emit(state.copyWith(showingBarGroups: showingBarGroups, type: event.type));
           break;
         case 2://month
@@ -120,7 +118,6 @@ class StatisticBloc extends HydratedBloc<StatisticEvent, StatisticState> {
           var barGroup5 = makeGroupData(4, barInfo.successCountMonth[4],barInfo.unsuccessCountMonth[4]);
           var barGroup6 = makeGroupData(5, barInfo.successCountMonth[5],barInfo.unsuccessCountMonth[5]);
           showingBarGroups = [barGroup1, barGroup2, barGroup3, barGroup4, barGroup5, barGroup6, ];
-          print(showingBarGroups.length);
           emit(state.copyWith(showingBarGroups: showingBarGroups, type: event.type));
           break;
       }

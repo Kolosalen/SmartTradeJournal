@@ -54,6 +54,8 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   flutter_cupertino_date_picker_fork: ^1.0.7
+  url_launcher: ^6.2.4
+  share_plus: ^7.2.2
 
 dev_dependencies:
   flutter_test:

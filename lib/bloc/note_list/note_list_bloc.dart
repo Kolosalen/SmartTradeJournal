@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,14 +20,13 @@ class NoteListBloc extends HydratedBloc<NoteListEvent, NoteListState> {
       emit(state);
     });
     on<_NewNote>((event, emit) async{
-      final resultNote = await Get.to(() => AddNoteForm());
+      final resultNote = await Get.to(() => const AddNoteForm());
       // state.noteList.add(resultNote);
       var noteListNew = <TradeNote>[];
       noteListNew.addAll(state.noteList);
       if (resultNote != null) {
         noteListNew.add(resultNote);
       }
-      print(resultNote);
       noteListNew.sort((a, b) => (b.dateTime.compareTo(a.dateTime)));//Сортировка по времени в порядке не возрастания
       emit(state.copyWith(noteList: noteListNew));
     });
