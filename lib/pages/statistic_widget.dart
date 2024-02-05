@@ -72,10 +72,10 @@ class _StatisticWidgetState extends State<StatisticWidget> {
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    var titles;
     final titlesDay = <String>['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'];
     final titlesWeek = <String>['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     final titlesMonth = <String>['1-5', '5-10', '10-15', '15-20', '20-25', '25-30'];
+    List<String> titles = titlesDay;
     if (_isSelected[0]) {titles = titlesDay;}
     if (_isSelected[1]) {titles = titlesWeek;}
     if (_isSelected[2]) {titles = titlesMonth;}
@@ -134,8 +134,6 @@ class _StatisticWidgetState extends State<StatisticWidget> {
               ),
               BlocBuilder<StatisticBloc, StatisticState>(
                 builder: (context, state) {
-                  print(state.showingBarGroups);
-                  print(state.type);
                   return Expanded(
                     child: BarChart(
                     BarChartData(
